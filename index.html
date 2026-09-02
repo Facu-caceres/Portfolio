@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Facundo Caceres Olguin - Junior SOC Analyst & Blue Team Defender. Computer Engineering Student at UNLaM (Entering 4th Year). Specializing in alert triage, Wireshark network forensics, threat detection, and incident handling.">
+  <meta name="keywords" content="SOC Analyst, Junior SOC Analyst, Blue Team, Cybersecurity, Wireshark, UNLaM, Facundo Caceres Olguin, Threat Detection, Incident Handling, Network Forensics, Hack The Box">
+  <meta name="author" content="Facundo Caceres Olguin">
+  <title>Facundo Caceres Olguin | Junior SOC Analyst & Defensive Security</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              950: '#06090e',
+              900: '#0a0e17',
+              850: '#0d131f',
+              800: '#0f172a',
+              700: '#1e293b',
+              600: '#334155',
+              emerald: '#10b981',
+              cyan: '#06b6d4',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="bg-[#0a0e17] text-slate-200 font-sans antialiased selection:bg-emerald-500/30 selection:text-emerald-200 cyber-grid relative min-h-screen">
+
+  <!-- Accessible Skip Link -->
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-emerald-500 focus:text-black focus:font-mono focus:text-sm focus:rounded">
+    Skip to main content
+  </a>
+
+  <!-- Top Ambient Glow Mesh -->
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 cyber-radial-glow pointer-events-none -z-10"></div>
+
+  <!-- =========================================================================
+       1. HEADER / NAVBAR
+       ========================================================================= -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-[#0a0e17]/85 border-b border-slate-800/80 transition-all duration-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <!-- Brand Identity -->
+        <a href="#hero" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-emerald-500/50 rounded-lg p-1" aria-label="Facundo Caceres Olguin Home">
+          <div class="w-8 h-8 rounded bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center font-mono text-emerald-400 font-bold text-xs shadow-sm shadow-emerald-500/20 group-hover:border-emerald-400 transition-colors">
+            FC
+          </div>
+          <div class="flex flex-col">
+            <span class="font-mono text-sm font-semibold tracking-tight text-white group-hover:text-emerald-300 transition-colors">
+              FC <span class="text-slate-500">/</span> <span class="text-emerald-400">security-analyst</span>
+            </span>
+            <div class="flex items-center gap-1.5 text-[10px] font-mono text-emerald-500/80">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>LIVE DEFENSE</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-1 font-mono text-xs" aria-label="Main Navigation">
+          <a href="#about" class="px-3 py-1.5 text-slate-400 hover:text-emerald-300 hover:bg-slate-900/60 rounded border border-transparent hover:border-slate-800 transition-colors">
+            <span data-i18n="nav_about">About</span>
+          </a>
+          <a href="#skills" class="px-3 py-1.5 text-slate-400 hover:text-emerald-300 hover:bg-slate-900/60 rounded border border-transparent hover:border-slate-800 transition-colors">
+            <span data-i18n="nav_skills">Skills</span>
+          </a>
+          <a href="#projects" class="px-3 py-1.5 text-slate-400 hover:text-emerald-300 hover:bg-slate-900/60 rounded border border-transparent hover:border-slate-800 transition-colors">
+            <span data-i18n="nav_projects">Labs & Projects</span>
+          </a>
+          <a href="#education" class="px-3 py-1.5 text-slate-400 hover:text-emerald-300 hover:bg-slate-900/60 rounded border border-transparent hover:border-slate-800 transition-colors">
+            <span data-i18n="nav_education">Education</span>
+          </a>
+          <a href="#contact" class="px-3 py-1.5 text-slate-400 hover:text-emerald-300 hover:bg-slate-900/60 rounded border border-transparent hover:border-slate-800 transition-colors">
+            <span data-i18n="nav_contact">Contact</span>
+          </a>
+        </nav>
+
+        <!-- Navbar Actions: Language Switcher, Audio Toggle & Resume Button -->
+        <div class="hidden sm:flex items-center gap-2.5">
+          
+          <!-- Audio Synthesizer Toggle -->
+          <button id="audio-toggle-btn" class="p-2 text-slate-400 hover:text-slate-200 hover:bg-slate-900/80 rounded border border-slate-800 transition-colors" title="Toggle Cyber SFX (Muted by default)" aria-label="Toggle Sound Effects">
+            <span id="audio-toggle-icon">
+              <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+              </svg>
+            </span>
+          </button>
+
+          <!-- Language Switcher Toggle Button -->
+          <button id="lang-toggle-btn" class="flex items-center gap-1.5 px-2.5 py-1.5 rounded bg-slate-900/80 hover:bg-slate-800 text-slate-200 border border-slate-700 hover:border-emerald-500/40 font-mono text-xs transition-colors" title="Switch Language / Cambiar Idioma" aria-label="Toggle Language">
+            <span id="lang-flag" class="text-base leading-none select-none">🇺🇸</span>
+            <span id="lang-label" class="font-bold text-[11px] text-emerald-400 select-none">EN</span>
+          </button>
+
+          <!-- Quick Action: Download Resume (PDF) -->
+          <button data-action="open-resume" class="flex items-center gap-2 px-3.5 py-1.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 hover:text-emerald-300 border border-emerald-500/40 hover:border-emerald-400 font-mono text-xs font-medium transition-all shadow-sm shadow-emerald-950">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            <span data-i18n="nav_resume">Resume (PDF)</span>
+          </button>
+        </div>
+
+        <!-- Mobile Menu Controls -->
+        <div class="flex items-center gap-2 md:hidden">
+          <!-- Mobile Language Switcher -->
+          <button id="mobile-lang-toggle-btn" class="flex items-center gap-1 px-2 py-1 rounded bg-slate-900 text-slate-200 border border-slate-700 text-xs font-mono" title="Switch Language">
+            <span id="mobile-lang-flag" class="text-sm">🇺🇸</span>
+            <span id="mobile-lang-label" class="text-[10px] text-emerald-400 font-bold">EN</span>
+          </button>
+
+          <!-- Mobile CV Button -->
+          <button data-action="open-resume" class="flex items-center gap-1 px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-mono">
+            <span>CV</span>
+          </button>
+
+          <!-- Hamburger Button -->
+          <button id="mobile-menu-btn" class="p-2 text-slate-400 hover:text-white rounded border border-slate-800" aria-expanded="false" aria-label="Open Mobile Menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-800 bg-[#0a0e17]/95 px-4 pt-2 pb-4 space-y-1 font-mono text-sm">
+      <a href="#about" class="mobile-nav-link block px-3 py-2 text-slate-300 hover:text-emerald-400 hover:bg-slate-900 rounded">
+        <span data-i18n="nav_about">About</span>
+      </a>
+      <a href="#skills" class="mobile-nav-link block px-3 py-2 text-slate-300 hover:text-emerald-400 hover:bg-slate-900 rounded">
+        <span data-i18n="nav_skills">Skills & Arsenal</span>
+      </a>
+      <a href="#projects" class="mobile-nav-link block px-3 py-2 text-slate-300 hover:text-emerald-400 hover:bg-slate-900 rounded">
+        <span data-i18n="nav_projects">Labs & Projects</span>
+      </a>
+      <a href="#education" class="mobile-nav-link block px-3 py-2 text-slate-300 hover:text-emerald-400 hover:bg-slate-900 rounded">
+        <span data-i18n="nav_education">Education & Certs</span>
+      </a>
+      <a href="#contact" class="mobile-nav-link block px-3 py-2 text-slate-300 hover:text-emerald-400 hover:bg-slate-900 rounded">
+        <span data-i18n="nav_contact">Contact</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN CONTENT
+       ========================================================================= -->
+  <main id="main-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-24">
+
+    <!-- =======================================================================
+         2. HERO SECTION
+         ======================================================================= -->
+    <section id="hero" class="pt-4 sm:pt-8" aria-labelledby="hero-name">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: Bio, Pitch & Social Links (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+          
+          <!-- SOC System Status Badge -->
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/50 border border-emerald-500/30 text-emerald-400 font-mono text-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span data-i18n="hero_badge" class="tracking-wide">BLUE TEAM READINESS: TIER 1 SOC | REMOTE / HYBRID / ON-SITE</span>
+          </div>
+
+          <!-- Name & Tagline -->
+          <div class="space-y-3">
+            <h1 id="hero-name" class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-none">
+              <span data-i18n="hero_name_prefix">Facundo</span> <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400" data-i18n="hero_name_suffix">Caceres Olguin</span>
+            </h1>
+            
+            <p class="font-mono text-emerald-400 text-sm sm:text-base font-medium flex flex-wrap items-center gap-2">
+              <span data-i18n="hero_tagline_role">Junior SOC Analyst</span>
+              <span class="text-slate-600">■</span>
+              <span data-i18n="hero_tagline_focus">Blue Team & Threat Detection</span>
+              <span class="text-slate-600">■</span>
+              <span class="text-cyan-400" data-i18n="hero_tagline_edu">Computer Eng. @ UNLaM</span>
+            </p>
+          </div>
+
+          <!-- Short Pitch -->
+          <p data-i18n="hero_pitch" class="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl font-light">
+            "Deconstructing attack vectors, analyzing network traffic, and building resilient detection workflows to mitigate threats before they escalate."
+          </p>
+
+          <!-- Core Target Roles & Value Metrics -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2">
+            <div class="p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+              <div data-i18n="hero_stat_acad_label" class="text-xs font-mono text-slate-400">Academic Standing</div>
+              <div data-i18n="hero_stat_acad_val" class="text-lg font-bold text-white font-mono mt-0.5">Entering 4th Yr</div>
+              <div data-i18n="hero_stat_acad_sub" class="text-[11px] text-cyan-400 font-mono">UNLaM Engineering</div>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+              <div data-i18n="hero_stat_roles_label" class="text-xs font-mono text-slate-400">Target Roles</div>
+              <div data-i18n="hero_stat_roles_val" class="text-sm font-bold text-emerald-400 font-mono mt-0.5">Junior SOC / T1</div>
+              <div data-i18n="hero_stat_roles_sub" class="text-[11px] text-slate-400 font-mono">Cyber Security Support</div>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-900/60 border border-slate-800 col-span-2 sm:col-span-1">
+              <div data-i18n="hero_stat_invest_label" class="text-xs font-mono text-slate-400">Forensics & Triage</div>
+              <div data-i18n="hero_stat_invest_val" class="text-lg font-bold text-cyan-400 font-mono mt-0.5">PCAP & Logs</div>
+              <div data-i18n="hero_stat_invest_sub" class="text-[11px] text-emerald-400 font-mono">Wireshark / Syslog</div>
+            </div>
+          </div>
+
+          <!-- Action CTAs -->
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <a href="#projects" class="px-5 py-2.5 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold font-mono text-xs sm:text-sm transition-all shadow-lg shadow-emerald-500/20 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span data-i18n="hero_cta_projects">Explore Labs & Writeups</span>
+            </a>
+
+            <a href="#contact" class="px-5 py-2.5 rounded bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 font-mono text-xs sm:text-sm transition-all flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+              <span data-i18n="hero_cta_contact">Initiate Contact</span>
+            </a>
+          </div>
+
+          <!-- Badges & Social Links (Accurate Verified URLs) -->
+          <div class="pt-4 border-t border-slate-800/80 flex flex-wrap items-center gap-3">
+            <span data-i18n="hero_channels_label" class="text-xs font-mono text-slate-500 uppercase tracking-wider">Defensive Channels:</span>
+            
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/facundo-caceres-olguin" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-mono text-slate-300 hover:text-white transition-colors" title="LinkedIn Profile" aria-label="LinkedIn">
+              <svg class="w-3.5 h-3.5 text-blue-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+
+            <!-- GitHub -->
+            <a href="https://github.com/Facu-caceres" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-mono text-slate-300 hover:text-white transition-colors" title="GitHub Profile" aria-label="GitHub">
+              <svg class="w-3.5 h-3.5 text-slate-200" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+              <span>GitHub</span>
+            </a>
+
+            <!-- Hack The Box -->
+            <a href="https://profile.hackthebox.com/profile/019d080d-7bf2-7187-b518-4b18c3298acb?utm_medium=copy_url" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-mono text-slate-300 hover:text-white transition-colors" title="Hack The Box Profile" aria-label="Hack The Box">
+              <svg class="w-3.5 h-3.5 text-emerald-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M11.996 0a1.107 1.107 0 0 0-.555.148L1.624 5.812a1.11 1.11 0 0 0-.556.961v11.454c0 .398.213.766.556.962l9.817 5.664a1.11 1.11 0 0 0 1.11 0l9.817-5.664a1.11 1.11 0 0 0 .556-.962V6.773a1.11 1.11 0 0 0-.556-.961L12.551.148A1.107 1.107 0 0 0 11.996 0zm0 2.433l8.47 4.89-3.582 2.068-8.47-4.89 3.582-2.068zm-9.582 5.53l8.47 4.89v4.137l-8.47-4.89V7.963zm19.164 0v4.137l-8.47 4.89v-4.137l8.47-4.89z"/>
+              </svg>
+              <span>Hack The Box</span>
+            </a>
+
+            <!-- Direct Email Copy -->
+            <button data-copy-email="caceresolguinfacundo@gmail.com" class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/40 text-xs font-mono text-slate-300 hover:text-emerald-300 transition-colors" title="Copy Email" aria-label="Copy Email Address">
+              <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
+              </svg>
+              <span data-i18n="hero_copy_email">Copy Email</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Terminal Widget (5 cols) -->
+        <div class="lg:col-span-5" id="terminal-section">
+          <div class="rounded-xl border border-slate-800 bg-slate-950 shadow-2xl shadow-black/80 overflow-hidden scanline">
+            
+            <!-- Terminal Title Bar -->
+            <div class="px-4 py-2.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-amber-500/80 inline-block"></span>
+                <span class="w-3 h-3 rounded-full bg-emerald-500/80 inline-block"></span>
+                <span data-i18n="terminal_title" class="ml-2 font-mono text-xs text-slate-400 select-none">bash - soc-agent@security-workstation:~</span>
+              </div>
+              <div class="flex items-center gap-1.5 text-[11px] font-mono text-emerald-400">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>3ms</span>
+              </div>
+            </div>
+
+            <!-- Terminal Output Body -->
+            <div id="terminal-body" class="p-4 font-mono text-xs text-slate-300 space-y-3 max-h-[360px] overflow-y-auto">
+              
+              <!-- Initial simulated command -->
+              <div class="flex items-center gap-2 text-slate-400">
+                <span class="text-emerald-400">soc-agent@unlam-soc:~$</span>
+                <span class="text-white font-semibold">soc-agent status --profile facundo</span>
+              </div>
+
+              <!-- Structured Terminal Output -->
+              <div class="p-3.5 rounded-lg bg-emerald-950/20 border border-emerald-500/30 space-y-1.5 text-xs font-mono">
+                <div class="flex items-center justify-between text-emerald-400 font-bold border-b border-emerald-500/20 pb-1">
+                  <span>[AGENT: FACUNDO CACERES OLGUIN]</span>
+                  <span data-i18n="terminal_initial_badge" class="text-[10px] px-1.5 py-0.5 bg-emerald-500/20 rounded border border-emerald-500/30">TIER 1 SOC READY</span>
+                </div>
+                <div data-i18n="terminal_initial_roles"><span class="text-cyan-400">Target Roles:</span> Junior SOC Analyst | SOC Tier 1 | Cyber Support</div>
+                <div data-i18n="terminal_initial_edu"><span class="text-cyan-400">Education:</span> Computer Engineering (Entering 4th Year @ UNLaM)</div>
+                <div data-i18n="terminal_initial_focus"><span class="text-cyan-400">Core Focus:</span> Blue Team Operations, Alert Triage, Threat Detection</div>
+                <div data-i18n="terminal_initial_forensics"><span class="text-cyan-400">Forensics & Logs:</span> Windows Event Logs, Linux Syslog, Wireshark, tcpdump</div>
+                <div data-i18n="terminal_initial_stack"><span class="text-cyan-400">Tools & Stack:</span> Nmap, Burp Suite, Metasploit, Sysinternals, Python, Go, Bash</div>
+                <div data-i18n="terminal_initial_location"><span class="text-cyan-400">Location:</span> Buenos Aires, Argentina (Remote / Hybrid / On-site)</div>
+                <div data-i18n="terminal_initial_status" class="pt-1 text-emerald-400 font-semibold border-t border-emerald-500/20 flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>STATUS: "Open to Junior SOC Roles & Defensive Security Opportunities"</span>
+                </div>
+              </div>
+
+              <div data-i18n="terminal_hint" class="text-slate-400 text-[11px] font-mono">
+                Type <span class="text-cyan-400 font-mono">help</span> or click command chips below to inspect triage data.
+              </div>
+            </div>
+
+            <!-- Quick Command Chips -->
+            <div class="px-4 py-2 bg-slate-900/60 border-t border-slate-800/80 flex flex-wrap items-center gap-1.5 text-[11px] font-mono">
+              <span data-i18n="terminal_chip_label" class="text-slate-500 text-[10px] mr-1">QUICK:</span>
+              <button type="button" data-terminal-cmd="status" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-emerald-950 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 text-slate-300 transition-colors">status</button>
+              <button type="button" data-terminal-cmd="tools" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-emerald-950 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 text-slate-300 transition-colors">tools</button>
+              <button type="button" data-terminal-cmd="labs" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-emerald-950 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 text-slate-300 transition-colors">labs</button>
+              <button type="button" data-terminal-cmd="mitre" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-emerald-950 hover:text-emerald-300 border border-slate-700 hover:border-emerald-500/40 text-slate-300 transition-colors">mitre</button>
+              <button type="button" data-terminal-cmd="triage" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-cyan-950 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/40 text-slate-300 transition-colors">triage</button>
+              <button type="button" data-terminal-cmd="clear" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-red-950 hover:text-red-300 border border-slate-700 hover:border-red-500/40 text-slate-400 transition-colors">clear</button>
+            </div>
+
+            <!-- Terminal Interactive Input -->
+            <form id="terminal-form" class="px-4 py-2.5 bg-slate-900 border-t border-slate-800 flex items-center gap-2">
+              <span class="text-emerald-400 font-mono text-xs">soc-agent:~$</span>
+              <input type="text" id="terminal-input" data-i18n-placeholder="terminal_input_placeholder" class="w-full bg-transparent border-none text-white font-mono text-xs focus:outline-none focus:ring-0 placeholder:text-slate-600" placeholder="Type a command (e.g. 'help', 'triage', 'tools')..." autocomplete="off" spellcheck="false">
+              <span class="terminal-cursor"></span>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         3. ABOUT ME
+         ======================================================================= -->
+    <section id="about" class="scroll-mt-24 space-y-8" aria-labelledby="about-heading">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-6 bg-emerald-500 rounded-sm"></div>
+        <div>
+          <h2 id="about-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <span data-i18n="about_heading">About Me</span> <span class="text-slate-600 font-mono text-lg font-normal">/ 01</span>
+          </h2>
+          <p data-i18n="about_subheading" class="text-slate-400 text-xs sm:text-sm font-mono mt-0.5">Defensive Mindset, Engineering Rigor & Incident Triage</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        
+        <!-- Left Column: Narrative Summary (7 cols) -->
+        <div class="lg:col-span-7 glass-card rounded-xl p-6 sm:p-8 space-y-5">
+          <h3 data-i18n="about_card_title" class="text-xl font-bold text-white flex items-center gap-2">
+            <span>Computer Engineering Student with a Focus on Defensive Operations</span>
+          </h3>
+
+          <p data-i18n="about_p1" class="text-slate-300 leading-relaxed text-sm sm:text-base">
+            I am a Computer Engineering student currently <strong class="text-white font-semibold">entering my 4th year</strong> at the <span class="text-emerald-400 font-medium">Universidad Nacional de La Matanza (UNLaM)</span>, integrating deep academic foundations in operating systems, computer networking, distributed systems, and advanced algorithms with hands-on defensive security engineering.
+          </p>
+
+          <p data-i18n="about_p2" class="text-slate-300 leading-relaxed text-sm sm:text-base">
+            My primary technical drive is in <strong class="text-white font-semibold">Blue Team operations, alert triage, and incident handling</strong>: investigating anomalous telemetry, correlating security events across Windows (Security Event Logs) and Linux (Syslog/auditd) environments, and dissecting network traffic with Wireshark and tcpdump to uncover stealthy attack vectors.
+          </p>
+
+          <p data-i18n="about_p3" class="text-slate-300 leading-relaxed text-sm sm:text-base">
+            Through continuous practice on <strong class="text-emerald-400">Hack The Box</strong> and custom laboratory environments, I analyze adversary tactics mapped directly against the <strong class="text-cyan-400">MITRE ATT&CK</strong> matrix and <strong class="text-cyan-400">OWASP Top 10</strong>. This offensive deconstruction directly informs how I build actionable detection rules, harden infrastructure, and minimize response times.
+          </p>
+
+          <!-- Core Pillars Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-800">
+            <div class="space-y-1.5">
+              <div class="text-xs font-mono text-emerald-400 font-bold flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span data-i18n="about_pillar1_title">DEFENSIVE METHODOLOGY</span>
+              </div>
+              <p data-i18n="about_pillar1_desc" class="text-xs text-slate-400">
+                Rigorous alert triage, separating false positives from genuine compromise, and adhering to standard Incident Response lifecycles (NIST / SANS).
+              </p>
+            </div>
+
+            <div class="space-y-1.5">
+              <div class="text-xs font-mono text-cyan-400 font-bold flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                <span data-i18n="about_pillar2_title">SYSTEMS & NETWORKING DEPTH</span>
+              </div>
+              <p data-i18n="about_pillar2_desc" class="text-xs text-slate-400">
+                In-depth grasp of TCP/IP protocol handshakes, DNS anomalies, Linux CLI internals, and Active Directory authentication fundamentals.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive SOC Workflow Widget (5 cols) -->
+        <div class="lg:col-span-5 glass-card rounded-xl p-6 sm:p-7 flex flex-col justify-between space-y-6">
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <span data-i18n="about_lifecycle_title" class="font-mono text-xs font-semibold text-emerald-400 tracking-wider">DEFENSIVE LIFECYCLE</span>
+              <span class="text-[11px] font-mono text-slate-500">NIST SP 800-61 ALIGNED</span>
+            </div>
+
+            <!-- Workflow Steps -->
+            <div class="mt-4 space-y-3.5 font-mono text-xs">
+              
+              <!-- Step 1 -->
+              <div class="flex items-start gap-3 p-2.5 rounded bg-slate-900/60 border border-slate-800">
+                <div class="w-6 h-6 rounded bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-xs shrink-0">1</div>
+                <div>
+                  <div data-i18n="about_step1_title" class="text-white font-semibold">Telemetry & Ingestion</div>
+                  <div data-i18n="about_step1_desc" class="text-[11px] text-slate-400">Syslog, WinEvent (4624/4625/4688/7045), PCAP feeds, NetFlow streams.</div>
+                </div>
+              </div>
+
+              <!-- Step 2 -->
+              <div class="flex items-start gap-3 p-2.5 rounded bg-slate-900/60 border border-slate-800">
+                <div class="w-6 h-6 rounded bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 flex items-center justify-center font-bold text-xs shrink-0">2</div>
+                <div>
+                  <div data-i18n="about_step2_title" class="text-white font-semibold">Triage & Normalization</div>
+                  <div data-i18n="about_step2_desc" class="text-[11px] text-slate-400">Filter false positives, assess event velocity, prioritize incident severity.</div>
+                </div>
+              </div>
+
+              <!-- Step 3 -->
+              <div class="flex items-start gap-3 p-2.5 rounded bg-slate-900/60 border border-slate-800">
+                <div class="w-6 h-6 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center font-bold text-xs shrink-0">3</div>
+                <div>
+                  <div data-i18n="about_step3_title" class="text-white font-semibold">PCAP & Artifact Forensics</div>
+                  <div data-i18n="about_step3_desc" class="text-[11px] text-slate-400">Wireshark stream reassembly, payload decoding, Sysinternals process inspection.</div>
+                </div>
+              </div>
+
+              <!-- Step 4 -->
+              <div class="flex items-start gap-3 p-2.5 rounded bg-slate-900/60 border border-slate-800">
+                <div class="w-6 h-6 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center font-bold text-xs shrink-0">4</div>
+                <div>
+                  <div data-i18n="about_step4_title" class="text-white font-semibold">Containment & Remediation</div>
+                  <div data-i18n="about_step4_desc" class="text-[11px] text-slate-400">Host isolation, ticket documentation, credential revocation, firewall filtering.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Assurance Badge -->
+          <div class="p-3 rounded bg-emerald-950/20 border border-emerald-500/30 text-[11px] font-mono text-emerald-300 flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <span data-i18n="about_assurance">Ready to deliver Tier 1 triage velocity & thorough documentation from Day 1.</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         4. TECHNICAL ARSENAL (CATEGORIZED GRID)
+         ======================================================================= -->
+    <section id="skills" class="scroll-mt-24 space-y-8" aria-labelledby="skills-heading">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-6 bg-cyan-500 rounded-sm"></div>
+          <div>
+            <h2 id="skills-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <span data-i18n="skills_heading">Technical Arsenal</span> <span class="text-slate-600 font-mono text-lg font-normal">/ 02</span>
+            </h2>
+            <p data-i18n="skills_subheading" class="text-slate-400 text-xs sm:text-sm font-mono mt-0.5">Defensive Operations, Analysis & Forensics, Security Tools & Scripting</p>
+          </div>
+        </div>
+
+        <!-- Filter Buttons & Search -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Live Search Input -->
+          <div class="relative">
+            <input type="text" id="skill-search" data-i18n-placeholder="skills_search_placeholder" placeholder="Search skill or tool..." class="bg-slate-900/80 border border-slate-800 rounded px-3 py-1.5 text-xs font-mono text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500/50 w-44 sm:w-52">
+            <svg class="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-2.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+
+          <!-- Category Pills -->
+          <div class="flex flex-wrap items-center gap-1.5 font-mono text-xs">
+            <button data-skill-filter="all" class="px-3 py-1.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 transition-colors">
+              <span data-i18n="skills_filter_all">All</span>
+            </button>
+            <button data-skill-filter="soc" class="px-3 py-1.5 rounded bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white transition-colors">
+              <span data-i18n="skills_filter_soc">SOC & IR</span>
+            </button>
+            <button data-skill-filter="network" class="px-3 py-1.5 rounded bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white transition-colors">
+              <span data-i18n="skills_filter_network">Network</span>
+            </button>
+            <button data-skill-filter="systems" class="px-3 py-1.5 rounded bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white transition-colors">
+              <span data-i18n="skills_filter_systems">Tools & AD</span>
+            </button>
+            <button data-skill-filter="scripting" class="px-3 py-1.5 rounded bg-slate-900/60 text-slate-400 border border-slate-800 hover:text-white transition-colors">
+              <span data-i18n="skills_filter_scripting">Scripting</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Category 1: Blue Team Operations & Incident Handling -->
+        <div data-skill-category="soc" class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <div class="p-2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 data-i18n="skills_c1_title" class="font-bold text-white text-base">Blue Team Operations & Triage</h3>
+                  <p data-i18n="skills_c1_sub" class="text-slate-400 text-xs font-mono">Alert Triage, Incident Handling & Threat Detection</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">CORE FOCUS</span>
+            </div>
+
+            <!-- Detailed Skills List -->
+            <ul class="mt-4 space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c1_li1"><strong class="text-white font-medium">Alert Triage & Incident Handling:</strong> Processing security telemetry, separating benign activity from malicious indicators, and escalating actionable incident tickets.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c1_li2"><strong class="text-white font-medium">Windows Event Logs:</strong> Investigation of Security Event IDs: 4624 (Successful Logon), 4625 (Failed Logon), 4688 (Process Creation), 7045 (Service Installation), 1102 (Log Cleared).</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c1_li3"><strong class="text-white font-medium">Linux Syslog & auditd:</strong> Tracking authentication anomalies in <code class="text-cyan-300 font-mono">/var/log/auth.log</code>, monitoring sudo usage, and inspecting execve syscalls.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c1_li4"><strong class="text-white font-medium">MITRE ATT&CK Mapping:</strong> Correlating observed indicators across Initial Access, Execution, Persistence, Privilege Escalation, and Exfiltration.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c1_li5"><strong class="text-white font-medium">OWASP Top 10:</strong> Deconstructing and remediating Injection (SQLi/OS Command Injection), Broken Access Control, and Server-Side Request Forgery.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Badges -->
+          <div class="pt-3 border-t border-slate-800 flex flex-wrap gap-1.5 font-mono text-[11px]">
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Alert Triage</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">WinEvent 4624/4625/4688</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Linux Syslog / auditd</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">MITRE ATT&CK</span>
+          </div>
+        </div>
+
+        <!-- Category 2: Network Forensics & Analysis -->
+        <div data-skill-category="network" class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <div class="p-2 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 data-i18n="skills_c2_title" class="font-bold text-white text-base">Network Forensics & Analysis</h3>
+                  <p data-i18n="skills_c2_sub" class="text-slate-400 text-xs font-mono">Packet Dissection, Protocol Inspection & Scan Detection</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">HANDS-ON</span>
+            </div>
+
+            <!-- Detailed Skills List -->
+            <ul class="mt-4 space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c2_li1"><strong class="text-white font-medium">Wireshark & PCAP Dissection:</strong> Following TCP streams, inspecting packet headers, analyzing retransmissions, and reconstructing cleartext transmissions.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c2_li2"><strong class="text-white font-medium">tcpdump CLI & BPF:</strong> Crafting targeted Berkeley Packet Filters on command line to isolate suspicious host IPs, unusual ports, and anomalous protocols.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c2_li3"><strong class="text-white font-medium">Protocol Deep Inspection:</strong> TCP 3-way handshake analysis, UDP traffic patterns, DNS queries (detecting high-entropy tunneling), and HTTP/HTTPS headers.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-cyan-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c2_li4"><strong class="text-white font-medium">Malicious Scans & Cleartext:</strong> Distinguishing half-open TCP SYN scans from Connect scans and locating exposed credentials traversing unencrypted channels.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Badges -->
+          <div class="pt-3 border-t border-slate-800 flex flex-wrap gap-1.5 font-mono text-[11px]">
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Wireshark</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">tcpdump</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">PCAP Inspection</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">TCP/IP & DNS</span>
+          </div>
+        </div>
+
+        <!-- Category 3: Security Tools & Systems -->
+        <div data-skill-category="systems" class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <div class="p-2 rounded bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 data-i18n="skills_c3_title" class="font-bold text-white text-base">Security Tools & Systems</h3>
+                  <p data-i18n="skills_c3_sub" class="text-slate-400 text-xs font-mono">Tooling, Process Inspection & Directory Services</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/30">INFRA & TOOLS</span>
+            </div>
+
+            <!-- Detailed Skills List -->
+            <ul class="mt-4 space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-blue-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c3_li1"><strong class="text-white font-medium">Nmap:</strong> Service enumeration, version detection, NSE scripting, and analyzing scanner traffic signatures.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c3_li2"><strong class="text-white font-medium">Burp Suite & Metasploit:</strong> Intercepting web application traffic, identifying vulnerable endpoints, and analyzing exploit payloads to formulate defenses.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c3_li3"><strong class="text-white font-medium">Sysinternals Suite:</strong> Process Explorer and Process Monitor (Procmon) for investigating spawned processes, handles, and DLL injections.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-blue-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c3_li4"><strong class="text-white font-medium">Linux CLI & Active Directory:</strong> Fluent terminal administration in Debian, Kali, and Ubuntu; understanding AD Domain Services, Kerberos tickets, and LDAP.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Badges -->
+          <div class="pt-3 border-t border-slate-800 flex flex-wrap gap-1.5 font-mono text-[11px]">
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Nmap</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Burp Suite</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Sysinternals</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Active Directory</span>
+          </div>
+        </div>
+
+        <!-- Category 4: Scripting & Languages -->
+        <div data-skill-category="scripting" class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-4">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+              <div class="flex items-center gap-2.5">
+                <div class="p-2 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 data-i18n="skills_c4_title" class="font-bold text-white text-base">Scripting & Languages</h3>
+                  <p data-i18n="skills_c4_sub" class="text-slate-400 text-xs font-mono">Automation, Log Parsing & Secure Systems Programming</p>
+                </div>
+              </div>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/30">DEVELOPMENT</span>
+            </div>
+
+            <!-- Detailed Skills List -->
+            <ul class="mt-4 space-y-2.5 text-xs text-slate-300">
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c4_li1"><strong class="text-white font-medium">Python & Go:</strong> Writing automated log parsers, extracting IOCs using regular expressions, socket communication, and high-concurrency tooling.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c4_li2"><strong class="text-white font-medium">Bash Scripting:</strong> Command-line pipelines leveraging grep, awk, sed, sort, and uniq for rapid triage on live incident endpoints.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c4_li3"><strong class="text-white font-medium">Java & C:</strong> Secure application engineering, memory allocation safety, defensive boundary validation, and POSIX system call understanding.</div>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 font-mono font-bold">›</span>
+                <div data-i18n="skills_c4_li4"><strong class="text-white font-medium">SQL (SQL Server):</strong> Relational schema design, administration, data integrity constraints, and defensive parameterized queries to prevent SQL injection.</div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Badges -->
+          <div class="pt-3 border-t border-slate-800 flex flex-wrap gap-1.5 font-mono text-[11px]">
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Python</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Go</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Bash</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">Java</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">C</span>
+            <span class="px-2 py-1 rounded bg-slate-900 text-slate-300 border border-slate-800">SQL Server</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         5. LABS & FEATURED PROJECTS
+         ======================================================================= -->
+    <section id="projects" class="scroll-mt-24 space-y-8" aria-labelledby="projects-heading">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-6 bg-emerald-500 rounded-sm"></div>
+        <div>
+          <h2 id="projects-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <span data-i18n="projects_heading">Labs & Featured Projects</span> <span class="text-slate-600 font-mono text-lg font-normal">/ 03</span>
+          </h2>
+          <p data-i18n="projects_subheading" class="text-slate-400 text-xs sm:text-sm font-mono mt-0.5">Practical Attack Path Analysis, Protocol Forensics & Defensive Software</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Project Card 1: Hack The Box Practice & Threat Analysis -->
+        <article class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-5 group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors pointer-events-none"></div>
+
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                LAB & WRITEUPS
+              </span>
+              <span class="font-mono text-[11px] text-slate-500">DEFENSIVE STUDY</span>
+            </div>
+
+            <h3 data-i18n="projects_p1_title" class="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
+              Hack The Box Practice & Threat Analysis
+            </h3>
+
+            <p data-i18n="projects_p1_desc" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Analyzing attack paths, exploiting web vulnerabilities (SQLi, OS Command Injection), privilege escalation in Linux/Windows, and creating actionable defensive mitigation documentation.
+            </p>
+
+            <!-- Defensive Takeaway Callout -->
+            <div class="p-3 rounded-lg bg-emerald-950/20 border border-emerald-500/20 space-y-1">
+              <div class="text-[11px] font-mono text-emerald-400 font-semibold flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span data-i18n="projects_takeaway_label">Defensive Takeaway:</span>
+              </div>
+              <p data-i18n="projects_p1_takeaway" class="text-[11px] text-slate-400 leading-normal font-mono">
+                Formulated auditd rules for spawned interactive shells, enforced least privilege across sudoers, and mapped Snort/Suricata rules to block injection payloads.
+              </p>
+            </div>
+
+            <!-- Tech Badges -->
+            <div class="flex flex-wrap gap-1.5 font-mono text-[11px] pt-1">
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">Hack The Box</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">SQLi & Command Inj.</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">Privilege Escalation</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">Mitigation Docs</span>
+            </div>
+          </div>
+
+          <!-- Card Actions -->
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <button type="button" data-project-id="htb" class="px-3 py-1.5 rounded bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 hover:text-emerald-300 border border-emerald-500/30 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors">
+              <span data-i18n="projects_p1_btn">View Defensive Playbook</span>
+              <span class="font-bold">›</span>
+            </button>
+
+            <a href="https://github.com/Facu-caceres" target="_blank" rel="noopener noreferrer" class="p-2 text-slate-400 hover:text-white transition-colors" title="GitHub Repository" aria-label="GitHub Repository">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Project Card 2: Network Traffic & Protocol Analysis -->
+        <article class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-5 group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-cyan-500/5 rounded-full blur-2xl group-hover:bg-cyan-500/10 transition-colors pointer-events-none"></div>
+
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                PCAP FORENSICS
+              </span>
+              <span class="font-mono text-[11px] text-slate-500">TRAFFIC INSPECTION</span>
+            </div>
+
+            <h3 data-i18n="projects_p2_title" class="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors">
+              Network Traffic & Protocol Analysis
+            </h3>
+
+            <p data-i18n="projects_p2_desc" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Deep packet inspection with Wireshark and tcpdump, analyzing protocol handshakes across TCP/IP, DNS, and HTTP/HTTPS, identifying malicious port scans and cleartext transmissions.
+            </p>
+
+            <!-- Defensive Takeaway Callout -->
+            <div class="p-3 rounded-lg bg-cyan-950/20 border border-cyan-500/20 space-y-1">
+              <div class="text-[11px] font-mono text-cyan-400 font-semibold flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span data-i18n="projects_takeaway_label">Defensive Takeaway:</span>
+              </div>
+              <p data-i18n="projects_p2_takeaway" class="text-[11px] text-slate-400 leading-normal font-mono">
+                Identified half-open TCP SYN scans vs full Connect scans, extracted cleartext credentials, and established BPF packet filters for incident investigations.
+              </p>
+            </div>
+
+            <!-- Tech Badges -->
+            <div class="flex flex-wrap gap-1.5 font-mono text-[11px] pt-1">
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">Wireshark</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">tcpdump</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">TCP/IP & DNS</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">HTTP/HTTPS</span>
+            </div>
+          </div>
+
+          <!-- Card Actions -->
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <button type="button" data-project-id="network" class="px-3 py-1.5 rounded bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 hover:text-cyan-300 border border-cyan-500/30 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors">
+              <span data-i18n="projects_p2_btn">View Traffic Filters</span>
+              <span class="font-bold">›</span>
+            </button>
+
+            <a href="https://github.com/Facu-caceres" target="_blank" rel="noopener noreferrer" class="p-2 text-slate-400 hover:text-white transition-colors" title="GitHub Repository" aria-label="GitHub Repository">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- Project Card 3: Defensive Software & Database Engineering -->
+        <article class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-5 group relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-28 h-28 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors pointer-events-none"></div>
+
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 rounded text-[10px] font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/30">
+                SECURE CODING
+              </span>
+              <span class="font-mono text-[11px] text-slate-500">SYSTEM ARCHITECTURE</span>
+            </div>
+
+            <h3 data-i18n="projects_p3_title" class="text-lg font-bold text-white group-hover:text-blue-300 transition-colors">
+              Defensive Software & Database Engineering
+            </h3>
+
+            <p data-i18n="projects_p3_desc" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Secure programming in Java and C, database modeling and administration using SQL Server with strict emphasis on data integrity, ACID principles, and input sanitization.
+            </p>
+
+            <!-- Defensive Takeaway Callout -->
+            <div class="p-3 rounded-lg bg-blue-950/20 border border-blue-500/20 space-y-1">
+              <div class="text-[11px] font-mono text-blue-400 font-semibold flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span data-i18n="projects_takeaway_label">Defensive Takeaway:</span>
+              </div>
+              <p data-i18n="projects_p3_takeaway" class="text-[11px] text-slate-400 leading-normal font-mono">
+                Eliminated SQL injection vectors with parameterized prepared statements, prevented memory buffer overflows in C, and enforced role-based database constraints.
+              </p>
+            </div>
+
+            <!-- Tech Badges -->
+            <div class="flex flex-wrap gap-1.5 font-mono text-[11px] pt-1">
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">Java</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">C</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">SQL Server</span>
+              <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800">Parameterized Queries</span>
+            </div>
+          </div>
+
+          <!-- Card Actions -->
+          <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+            <button type="button" data-project-id="secureapp" class="px-3 py-1.5 rounded bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 hover:text-blue-300 border border-blue-500/30 text-xs font-mono font-medium flex items-center gap-1.5 transition-colors">
+              <span data-i18n="projects_p3_btn">View Architecture Specs</span>
+              <span class="font-bold">›</span>
+            </button>
+
+            <a href="https://github.com/Facu-caceres" target="_blank" rel="noopener noreferrer" class="p-2 text-slate-400 hover:text-white transition-colors" title="GitHub Repository" aria-label="GitHub Repository">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Additional Featured Lab Card: Automation Suite (Python & Go) -->
+      <div class="glass-card rounded-xl p-6 border-emerald-500/30 bg-gradient-to-r from-slate-900/90 via-slate-900/60 to-emerald-950/20 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div class="space-y-2">
+          <div class="flex items-center gap-2">
+            <span data-i18n="projects_bonus_badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/40">
+              BONUS DEFENSIVE TOOLING
+            </span>
+            <span class="text-xs font-mono text-slate-400">SOC Triage Automation Suite (Python, Go & Bash)</span>
+          </div>
+          <h3 data-i18n="projects_bonus_title" class="text-base sm:text-lg font-bold text-white">Automated Brute-Force & Anomaly Detection Pipeline</h3>
+          <p data-i18n="projects_bonus_desc" class="text-xs sm:text-sm text-slate-300 max-w-3xl">
+            Custom log-parser parsing multi-gigabyte auth.log files and Windows Security events, detecting brute-force threshold breaches, and producing formatted incident triage dossiers with external IP threat enrichment.
+          </p>
+        </div>
+
+        <button type="button" data-project-id="logparser" class="shrink-0 px-4 py-2 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono text-xs font-bold transition-all shadow-md shadow-emerald-500/20 flex items-center gap-2">
+          <span data-i18n="projects_bonus_btn">View Script & Docs</span>
+          <span>›</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- =======================================================================
+         6. EDUCATION & CERTIFICATIONS
+         ======================================================================= -->
+    <section id="education" class="scroll-mt-24 space-y-8" aria-labelledby="education-heading">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-6 bg-cyan-500 rounded-sm"></div>
+        <div>
+          <h2 id="education-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <span data-i18n="education_heading">Education & Certifications</span> <span class="text-slate-600 font-mono text-lg font-normal">/ 04</span>
+          </h2>
+          <p data-i18n="education_subheading" class="text-slate-400 text-xs sm:text-sm font-mono mt-0.5">Academic Credentials at UNLaM & Active Security Certifications Track</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Academic Degree (7 cols) -->
+        <div class="lg:col-span-7 glass-card rounded-xl p-6 sm:p-8 space-y-6">
+          <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-4">
+            <div>
+              <span data-i18n="education_deg_level" class="text-xs font-mono text-emerald-400 font-semibold tracking-wider uppercase">BACHELOR OF SCIENCE</span>
+              <h3 data-i18n="education_deg_title" class="text-xl font-extrabold text-white mt-0.5">Computer Engineering (Ingeniería en Informática)</h3>
+              <p data-i18n="education_inst" class="text-slate-300 font-medium text-sm mt-0.5">Universidad Nacional de La Matanza (UNLaM)</p>
+            </div>
+            <div class="text-right font-mono">
+              <span data-i18n="education_standing" class="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold whitespace-nowrap">Entering 4th Year</span>
+              <div data-i18n="education_period" class="text-[11px] text-slate-500 mt-1">2023 – Present</div>
+            </div>
+          </div>
+
+          <p data-i18n="education_desc" class="text-slate-300 text-sm leading-relaxed">
+            The Computer Engineering curriculum at UNLaM delivers an in-depth foundation in hardware-software interfaces, systems programming, and high-performance network engineering—providing direct analytical leverage for investigating sophisticated cyber threats.
+          </p>
+
+          <!-- Relevant Coursework Grid -->
+          <div class="space-y-3">
+            <h4 data-i18n="education_coursework_title" class="text-xs font-mono text-slate-400 uppercase tracking-wider font-semibold">Relevant Coursework:</h4>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-xs">
+              <div class="p-3 rounded bg-slate-900/70 border border-slate-800 space-y-1">
+                <div class="text-emerald-400 font-semibold flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span data-i18n="education_cw1_title">Computer Networks</span>
+                </div>
+                <div data-i18n="education_cw1_desc" class="text-[11px] text-slate-400">OSI & TCP/IP stack, routing protocols, packet routing, socket programming.</div>
+              </div>
+
+              <div class="p-3 rounded bg-slate-900/70 border border-slate-800 space-y-1">
+                <div class="text-cyan-400 font-semibold flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                  <span data-i18n="education_cw2_title">Operating Systems</span>
+                </div>
+                <div data-i18n="education_cw2_desc" class="text-[11px] text-slate-400">Process scheduling, IPC, memory management, file systems, Linux kernel primitives.</div>
+              </div>
+
+              <div class="p-3 rounded bg-slate-900/70 border border-slate-800 space-y-1">
+                <div class="text-blue-400 font-semibold flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                  <span data-i18n="education_cw3_title">Distributed Systems</span>
+                </div>
+                <div data-i18n="education_cw3_desc" class="text-[11px] text-slate-400">Consensus algorithms, fault tolerance, network synchronization, high-availability.</div>
+              </div>
+
+              <div class="p-3 rounded bg-slate-900/70 border border-slate-800 space-y-1">
+                <div class="text-amber-400 font-semibold flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+                  <span data-i18n="education_cw4_title">Database Architecture</span>
+                </div>
+                <div data-i18n="education_cw4_desc" class="text-[11px] text-slate-400">Relational schema design, SQL Server administration, ACID transactions, data security.</div>
+              </div>
+
+              <div class="p-3 rounded bg-slate-900/70 border border-slate-800 space-y-1 col-span-1 sm:col-span-2">
+                <div class="text-emerald-400 font-semibold flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                  <span data-i18n="education_cw5_title">Advanced Algorithms & Data Structures</span>
+                </div>
+                <div data-i18n="education_cw5_desc" class="text-[11px] text-slate-400">Algorithmic complexity, tree/graph traversal, state machines, and high-efficiency computation.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Certifications & Continuous Practice (5 cols) -->
+        <div class="lg:col-span-5 glass-card rounded-xl p-6 sm:p-7 space-y-6">
+          <div class="border-b border-slate-800 pb-3">
+            <span class="text-xs font-mono text-cyan-400 font-semibold tracking-wider uppercase">CONTINUOUS LEARNING & ROADMAP</span>
+            <h3 data-i18n="education_certs_title" class="text-lg font-bold text-white mt-0.5">Certifications & Milestones</h3>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Active Practice -->
+            <div class="p-3.5 rounded bg-emerald-950/20 border border-emerald-500/30 flex items-start justify-between gap-3">
+              <div class="space-y-1">
+                <div class="text-white font-semibold text-xs sm:text-sm flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span data-i18n="education_cert1_title">Hack The Box Labs & CTFs</span>
+                </div>
+                <div data-i18n="education_cert1_desc" class="text-[11px] text-slate-400">Active hands-on machines, web vulnerability exploitation, privilege escalation, and mitigation documentation.</div>
+              </div>
+              <span data-i18n="education_cert1_status" class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 whitespace-nowrap">ACTIVE</span>
+            </div>
+
+            <!-- Cert Item 1 -->
+            <div class="p-3 rounded bg-slate-900/60 border border-slate-800 flex items-start justify-between gap-3">
+              <div class="space-y-1">
+                <div data-i18n="education_cert2_title" class="text-white font-semibold text-xs sm:text-sm">CompTIA Security+</div>
+                <div data-i18n="education_cert2_desc" class="text-[11px] text-slate-400">Core threat landscape, IAM, security architecture, cryptography, and risk assessment.</div>
+              </div>
+              <span data-i18n="education_cert2_status" class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 whitespace-nowrap">PREPARATION</span>
+            </div>
+
+            <!-- Cert Item 2 -->
+            <div class="p-3 rounded bg-slate-900/60 border border-slate-800 flex items-start justify-between gap-3">
+              <div class="space-y-1">
+                <div data-i18n="education_cert3_title" class="text-white font-semibold text-xs sm:text-sm">Blue Team Level 1 (BTL1)</div>
+                <div data-i18n="education_cert3_desc" class="text-[11px] text-slate-400">Practical incident response, network traffic analysis, digital forensics, and SIEM alert handling.</div>
+              </div>
+              <span data-i18n="education_cert3_status" class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 whitespace-nowrap">TARGET</span>
+            </div>
+
+            <!-- Profile verification quick badge -->
+            <div class="p-3 rounded bg-slate-900/80 border border-slate-800 flex items-center justify-between text-xs font-mono">
+              <span data-i18n="education_cert_badge" class="text-slate-400">HTB Profile Badge:</span>
+              <a href="https://profile.hackthebox.com/profile/019d080d-7bf2-7187-b518-4b18c3298acb?utm_medium=copy_url" target="_blank" rel="noopener noreferrer" class="text-emerald-400 hover:underline flex items-center gap-1">
+                <span data-i18n="education_cert_link">View Verified Profile</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =======================================================================
+         7. CONTACT / CLEANUP (NO FORM, DIRECT CHANNELS HIGHLIGHTED)
+         ======================================================================= -->
+    <section id="contact" class="scroll-mt-24 space-y-8" aria-labelledby="contact-heading">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-6 bg-emerald-500 rounded-sm"></div>
+        <div>
+          <h2 id="contact-heading" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <span data-i18n="contact_heading">Contact & Secure Channels</span> <span class="text-slate-600 font-mono text-lg font-normal">/ 05</span>
+          </h2>
+          <p data-i18n="contact_subheading" class="text-slate-400 text-xs sm:text-sm font-mono mt-0.5">Let's discuss Junior SOC Analyst, SOC Tier 1, or Cyber Security Support roles</p>
+        </div>
+      </div>
+
+      <!-- Highlighted Let's Connect Card (Full Width / Max 4xl) -->
+      <div class="glass-card rounded-2xl p-6 sm:p-10 border-emerald-500/30 bg-gradient-to-b from-slate-900/90 via-slate-900/70 to-slate-950/90 shadow-2xl space-y-8">
+        
+        <!-- Card Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-6">
+          <div class="space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 font-mono text-xs">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span data-i18n="contact_status_badge">CHANNELS OPEN & MONITORED</span>
+            </div>
+            <h3 data-i18n="contact_title" class="text-2xl sm:text-3xl font-extrabold text-white">Let's Connect</h3>
+          </div>
+
+          <div class="flex items-center gap-2 font-mono text-xs text-slate-400 bg-slate-950/70 px-4 py-2 rounded-lg border border-slate-800 self-start sm:self-auto">
+            <span data-i18n="contact_clock_label">SOC Live Clock:</span>
+            <span id="live-clock" class="text-cyan-400 font-bold">--:--:-- UTC</span>
+          </div>
+        </div>
+
+        <!-- Description Pitch -->
+        <p data-i18n="contact_desc" class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
+          I am actively seeking Junior SOC Analyst, SOC Tier 1, or Cybersecurity Support Specialist opportunities where I can leverage my telemetry analysis, PCAP forensics, and computer engineering background.
+        </p>
+
+        <!-- Direct Info Grid (3 Cards) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 font-mono text-xs">
+          
+          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
+            <span data-i18n="contact_email_label" class="text-slate-400 text-[11px] uppercase tracking-wider block">Direct Email</span>
+            <a href="mailto:caceresolguinfacundo@gmail.com" class="text-emerald-400 hover:underline font-semibold text-sm break-all">
+              caceresolguinfacundo@gmail.com
+            </a>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1">
+            <span data-i18n="contact_location_label" class="text-slate-400 text-[11px] uppercase tracking-wider block">Location</span>
+            <span data-i18n="contact_location_val" class="text-slate-200 font-semibold text-sm">Buenos Aires, Argentina</span>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-950/80 border border-slate-800 space-y-1 sm:col-span-2 lg:col-span-1">
+            <span data-i18n="contact_avail_label" class="text-slate-400 text-[11px] uppercase tracking-wider block">Availability</span>
+            <span data-i18n="contact_avail_val" class="text-emerald-300 font-semibold text-sm">Remote / Hybrid / On-site</span>
+          </div>
+
+        </div>
+
+        <!-- Action Links & Profile Badges -->
+        <div class="pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4">
+          <div class="flex flex-wrap items-center gap-3">
+            <span data-i18n="contact_profiles_label" class="text-xs font-mono text-slate-500 uppercase tracking-wider">Verified Profiles:</span>
+
+            <!-- LinkedIn -->
+            <a href="https://www.linkedin.com/in/facundo-caceres-olguin" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-800 hover:border-slate-700 text-xs font-mono transition-colors">
+              <svg class="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+              <span>LinkedIn</span>
+            </a>
+
+            <!-- GitHub -->
+            <a href="https://github.com/Facu-caceres" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-800 hover:border-slate-700 text-xs font-mono transition-colors">
+              <svg class="w-4 h-4 text-slate-200" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+              <span>GitHub</span>
+            </a>
+
+            <!-- Hack The Box -->
+            <a href="https://profile.hackthebox.com/profile/019d080d-7bf2-7187-b518-4b18c3298acb?utm_medium=copy_url" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-slate-900/90 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-800 hover:border-slate-700 text-xs font-mono transition-colors">
+              <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 24 24"><path d="M11.996 0a1.107 1.107 0 0 0-.555.148L1.624 5.812a1.11 1.11 0 0 0-.556.961v11.454c0 .398.213.766.556.962l9.817 5.664a1.11 1.11 0 0 0 1.11 0l9.817-5.664a1.11 1.11 0 0 0 .556-.962V6.773a1.11 1.11 0 0 0-.556-.961L12.551.148A1.107 1.107 0 0 0 11.996 0zm0 2.433l8.47 4.89-3.582 2.068-8.47-4.89 3.582-2.068zm-9.582 5.53l8.47 4.89v4.137l-8.47-4.89V7.963zm19.164 0v4.137l-8.47 4.89v-4.137l8.47-4.89z"/></svg>
+              <span>Hack The Box</span>
+            </a>
+          </div>
+
+          <!-- CTAs: Direct Mail & Copy Email -->
+          <div class="flex items-center gap-2">
+            <a href="mailto:caceresolguinfacundo@gmail.com?subject=%5BSOC%20Opportunity%5D%20Junior%20SOC%20Analyst%20-%20Facundo%20Caceres" class="px-4 py-2 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono text-xs font-bold transition-all shadow-md shadow-emerald-500/20 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+              <span data-i18n="contact_send_email">Send Email</span>
+            </a>
+
+            <button data-copy-email="caceresolguinfacundo@gmail.com" class="px-4 py-2 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-emerald-300 border border-slate-800 hover:border-emerald-500/40 text-xs font-mono flex items-center gap-2 transition-colors">
+              <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" /></svg>
+              <span data-i18n="contact_copy_email">Copy Email</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================================
+       FOOTER
+       ========================================================================= -->
+  <footer class="mt-20 border-t border-slate-800 bg-[#070b12] py-8 text-xs font-mono text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      
+      <!-- Status & Protection Indicator -->
+      <div class="flex items-center gap-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span data-i18n="footer_status" class="text-emerald-400 font-semibold">● SOC Monitored & Protected</span>
+        <span class="text-slate-600">|</span>
+        <span data-i18n="footer_substatus" class="text-slate-400">Blue Team Active</span>
+      </div>
+
+      <!-- Copyright & Brand -->
+      <div class="text-slate-500 text-center sm:text-right">
+        <span data-i18n="footer_copyright">© 2026 Facundo Caceres Olguin. All rights reserved.</span>
+        <div data-i18n="footer_tagline" class="text-[11px] text-slate-600 mt-0.5">Built with modern semantic web standards & cyber aesthetics.</div>
+      </div>
+
+      <!-- Quick Back to Top -->
+      <div>
+        <a href="#hero" class="p-2 rounded bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-emerald-400 border border-slate-800 transition-colors inline-block" title="Back to top" aria-label="Back to top">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       MODAL 1: PROJECT DEEP DIVE & DEFENSIVE PLAYBOOK
+       ========================================================================= -->
+  <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="project-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"></div>
+
+    <div class="relative w-full max-w-2xl bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-6 sm:p-8 space-y-6 z-10 my-8">
+      
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <span id="modal-badge" data-i18n="modal_playbook_badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            DEFENSIVE PLAYBOOK
+          </span>
+          <h3 id="modal-title" class="text-lg sm:text-xl font-extrabold text-white mt-2">
+            Project Title
+          </h3>
+        </div>
+        <button id="project-modal-close" class="p-1.5 text-slate-400 hover:text-white rounded bg-slate-800 hover:bg-slate-700 transition-colors" aria-label="Close modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="space-y-4 text-xs sm:text-sm text-slate-300">
+        <p id="modal-desc" class="leading-relaxed"></p>
+
+        <!-- Tactics Mapping -->
+        <div class="space-y-1.5">
+          <div data-i18n="modal_mapping_title" class="font-mono text-xs text-slate-400 uppercase tracking-wider font-semibold">ATT&CK / Threat Mapping:</div>
+          <div id="modal-tactics" class="flex flex-wrap gap-1.5"></div>
+        </div>
+
+        <!-- Detection Takeaways -->
+        <div class="space-y-1.5">
+          <div data-i18n="modal_takeaways_title" class="font-mono text-xs text-emerald-400 uppercase tracking-wider font-semibold">Incident Detection Key Takeaways:</div>
+          <ul id="modal-takeaways" class="space-y-1.5 text-xs text-slate-300 font-mono"></ul>
+        </div>
+
+        <!-- Hardening Steps -->
+        <div class="space-y-1.5">
+          <div data-i18n="modal_hardening_title" class="font-mono text-xs text-cyan-400 uppercase tracking-wider font-semibold">Defensive Hardening & Mitigation:</div>
+          <ul id="modal-hardening" class="space-y-1.5 text-xs text-slate-300 font-mono"></ul>
+        </div>
+
+        <!-- Code Snippet -->
+        <div class="space-y-1.5">
+          <div data-i18n="modal_impl_title" class="font-mono text-xs text-slate-400 uppercase tracking-wider font-semibold">Signature / Rule Implementation:</div>
+          <pre class="p-3 bg-slate-950 rounded-lg border border-slate-800 font-mono text-xs text-emerald-300 overflow-x-auto"><code id="modal-snippet"></code></pre>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="pt-4 border-t border-slate-800 flex justify-end">
+        <button onclick="document.getElementById('project-modal-close').click()" class="px-4 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white font-mono text-xs transition-colors">
+          <span data-i18n="modal_close_btn">Close Playbook</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       MODAL 2: EXECUTIVE RESUME (PRINT / PDF) PREVIEW
+       ========================================================================= -->
+  <div id="resume-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 sm:p-6 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="resume-title">
+    <div id="resume-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"></div>
+
+    <div class="relative w-full max-w-3xl bg-slate-900 border border-slate-700 rounded-xl shadow-2xl p-6 sm:p-8 space-y-6 z-10 my-8">
+      
+      <!-- Modal Action Header -->
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4 no-print">
+        <div class="flex items-center gap-2">
+          <span data-i18n="resume_badge" class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            OFFICIAL CV
+          </span>
+          <span data-i18n="resume_sub" class="text-xs font-mono text-slate-400">Junior SOC Analyst Profile</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button id="print-resume-btn" class="px-3 py-1.5 rounded bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-mono text-xs font-bold transition-all flex items-center gap-1.5 shadow-sm shadow-emerald-950">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>
+            <span data-i18n="resume_print_btn">Print / Save as PDF</span>
+          </button>
+
+          <button id="copy-resume-btn" class="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-xs transition-colors">
+            <span data-i18n="resume_copy_btn">Copy Text</span>
+          </button>
+
+          <button id="resume-modal-close" class="p-1.5 text-slate-400 hover:text-white rounded bg-slate-800 hover:bg-slate-700 transition-colors" aria-label="Close modal">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- CV Content (Executive Print-ready format) -->
+      <div class="p-6 rounded-lg bg-slate-950 border border-slate-800 font-sans text-slate-300 space-y-6 text-xs sm:text-sm">
+        
+        <!-- Header -->
+        <div class="border-b border-slate-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 id="resume-title" class="text-2xl font-extrabold text-white">FACUNDO CACERES OLGUIN</h2>
+            <div class="text-emerald-400 font-mono text-xs font-semibold mt-0.5">Junior SOC Analyst | Blue Team & Threat Detection</div>
+          </div>
+          <div class="text-right font-mono text-xs text-slate-400 space-y-0.5">
+            <div>Buenos Aires, Argentina (Remote / Hybrid / On-site)</div>
+            <div>caceresolguinfacundo@gmail.com</div>
+          </div>
+        </div>
+
+        <!-- Executive Summary -->
+        <div class="space-y-1.5">
+          <div class="font-mono text-xs font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-1">Professional Summary</div>
+          <p class="text-slate-300 leading-relaxed text-xs">
+            Computer Engineering student at Universidad Nacional de La Matanza (UNLaM) entering 4th year, specializing in defensive cybersecurity, Tier 1 SOC operations, alert triage, incident handling, and threat detection. Practical experience in network forensics with Wireshark and tcpdump, Windows Event Logs (4624, 4625, 4688, 7045), Linux Syslog, and automated scripting in Python, Go, and Bash. Active hands-on practice on Hack The Box machines mapped to MITRE ATT&CK and OWASP Top 10 frameworks.
+          </p>
+        </div>
+
+        <!-- Technical Skills -->
+        <div class="space-y-1.5">
+          <div class="font-mono text-xs font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-1">Core Technical Skills</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <div><strong class="text-slate-200">Core Focus:</strong> Blue Team Operations, Alert Triage, Incident Handling, Threat Detection</div>
+            <div><strong class="text-slate-200">Analysis & Forensics:</strong> Windows Event Logs, Linux Syslog, MITRE ATT&CK, OWASP Top 10, Wireshark, tcpdump, PCAP inspection</div>
+            <div><strong class="text-slate-200">Security Tools:</strong> Nmap, Burp Suite, Metasploit, Sysinternals, Linux CLI, Active Directory fundamentals</div>
+            <div><strong class="text-slate-200">Scripting & Languages:</strong> Python, Go, Bash, Java, C, SQL (SQL Server)</div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div class="space-y-1.5">
+          <div class="font-mono text-xs font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-1">Education</div>
+          <div class="flex justify-between items-start">
+            <div>
+              <div class="font-semibold text-white">B.S. in Computer Engineering (Ingeniería en Informática)</div>
+              <div class="text-slate-400 text-xs">Universidad Nacional de La Matanza (UNLaM)</div>
+            </div>
+            <div class="text-right font-mono text-xs text-emerald-400 font-medium">Entering 4th Year (2023 – Present)</div>
+          </div>
+          <div class="text-slate-400 text-[11px] pt-1">
+            Relevant Coursework: Computer Networks, Operating Systems, Distributed Systems, Database Architecture, Advanced Algorithms.
+          </div>
+        </div>
+
+        <!-- Certifications & Milestones -->
+        <div class="space-y-1.5">
+          <div class="font-mono text-xs font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-1">Certifications & Milestones</div>
+          <div class="text-xs text-slate-300 space-y-1">
+            <div><strong class="text-emerald-400">Active:</strong> Hack The Box Hands-on Labs & CTF Challenges</div>
+            <div><strong class="text-cyan-400">In Progress / Target:</strong> CompTIA Security+ / BTL1 (Blue Team Level 1) preparation</div>
+          </div>
+        </div>
+
+        <!-- Projects & Labs -->
+        <div class="space-y-2">
+          <div class="font-mono text-xs font-bold text-white uppercase tracking-wider border-b border-slate-800 pb-1">Featured Defensive Projects & Labs</div>
+          
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-200">
+              <span>Hack The Box Practice & Threat Analysis</span>
+              <span class="text-slate-500 font-mono text-[11px]">Attack Analysis & Mitigation</span>
+            </div>
+            <div class="text-slate-400 text-xs">
+              Analyzed attack paths, exploited web vulnerabilities (SQLi, OS Command Injection), and escalated privileges in Linux/Windows. Authored detection signatures (auditd and Snort) and mitigation guides.
+            </div>
+          </div>
+
+          <div class="space-y-1 pt-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-200">
+              <span>Network Traffic & Protocol Analysis</span>
+              <span class="text-slate-500 font-mono text-[11px]">Wireshark / tcpdump</span>
+            </div>
+            <div class="text-slate-400 text-xs">
+              Dissected TCP/IP, DNS, and HTTP/HTTPS handshakes with Wireshark. Identified malicious port scans (TCP SYN vs Connect) and anomalous cleartext data exposure.
+            </div>
+          </div>
+
+          <div class="space-y-1 pt-1">
+            <div class="flex justify-between text-xs font-semibold text-slate-200">
+              <span>Defensive Software & Database Engineering</span>
+              <span class="text-slate-500 font-mono text-[11px]">Java / C / SQL Server</span>
+            </div>
+            <div class="text-slate-400 text-xs">
+              Engineered modular software with defensive parameterized database queries eliminating SQL injection, boundary checks in C, and relational database integrity in SQL Server.
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Main JavaScript File -->
+  <script src="app.js"></script>
+</body>
+</html>
